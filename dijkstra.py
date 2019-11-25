@@ -2,6 +2,8 @@ from heapdict import heapdict
 from collections import defaultdict
 
 def shortest(n, graph):
+    if graph == []:
+        return None
     neigh = defaultdict(list)
     path_to = defaultdict(list)
     edge = {}
