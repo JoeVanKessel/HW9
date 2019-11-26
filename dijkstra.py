@@ -1,7 +1,9 @@
 from heapdict import heapdict
 from collections import defaultdict
+import time
 
 def shortest(n, graph):
+    #start_time = time.time()
     if graph == []:
         return None
     neigh = defaultdict(list)
@@ -13,36 +15,40 @@ def shortest(n, graph):
         edge[i,j] = k
         neigh[i].append(j)
         neigh[j].append(i)
-        if i == 0:
-            if weight.get(i, "") == "":
-                weight[i] = 0
-                path_to[i].append(i)
-        else:
-            path_to[i] = []
-            if path_to.get(j, "") == "":
-                path_to[j] = []
-            weight[i] = float('inf')
-            weight[j] = float("inf")
+        #if i == 0:
+        #    if weight.get(i, "") == "":
+        #        weight[i] = 0
+        #        path_to[i].append(i)
+        #else:
+        path_to[i] = []
+            #if path_to.get(j, "") == "":
+        path_to[j] = []
+        weight[i] = float('inf')
+        weight[j] = float("inf")
+
+    path_to[0].append(0)
+    weight[0] = 0
+
+    #print("--- %s seconds to setup---" % (time.time() - start_time))
+    #print("edge dict below")
+    #print(edge)
+    #print("path_to dict below")
+    #for a in path_to:
+    #    print(a, path_to[a])
+    #print("weight dict below")
+    #for a in weight:
+    #    print(a, weight[a])
+    #print("neigh dict below")
+    #for a in neigh:
+    #    print(a, neigh[a])
 
     def _shortest():
         new_weight = float('inf')
         while len(weight) != 1:
-            #print("edge dict below")
-            #print(edge)
-            #print("path_to dict below")
-            #for a in path_to:
-                #print(a, path_to[a])
-            #print("weight dict below")
-            #for a in weight:
-                #print(a, weight[a])
-            #print("neigh dict below")
-            #for a in neigh:
-                #print(a, neigh[a])
+
             curr_node, curr_weight = weight.popitem()
-
-
             for neigh_node in neigh[curr_node]:
-                #try:
+
 
                 if weight.get(neigh_node, "") != "":
                     #print("neighbor node: ", neigh_node)
@@ -64,6 +70,8 @@ def shortest(n, graph):
 
                     if neigh_node == n-1 and new_weight > weight[neigh_node]:
                         new_weight = weight[neigh_node]
+
+        #print("--- %s seconds for alg---" % (time.time() - start_time))
         return new_weight
 
     #for a in _shortest():
@@ -78,6 +86,8 @@ def shortest(n, graph):
 
     if shortest_weight == float("inf") or path_to[n-1] == []:
         #print(least_weigth, path_to[n-1])
+        #print("--- %s seconds to return---" % (time.time() - start_time))
         return None
     else:
+        #print("--- %s seconds to return---" % (time.time() - start_time))
         return shortest_weight, path_to[n-1]
