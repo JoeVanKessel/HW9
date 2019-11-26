@@ -18,33 +18,31 @@ def shortest(n, graph):
         weight[i] = float('inf')
         weight[j] = float("inf")
     weight[0] = 0
+    num_to_visit = len(neigh[n-1])-1
+    def _shortest(num_to_visit):
 
-    def _shortest():
-        num_to_visit = len(neigh[n-1])-1
+        curr_node, curr_weight = weight.popitem()
+        if curr_node == n-1:
+            if num_to_visit <= 0:
+                return curr_weight
 
-        while len(weight) != 1:
+        for neigh_node in neigh[curr_node]:
+            if neigh_node == n-1:
+                num_to_visit = num_to_visit - 1
+            if weight.get(neigh_node, "") != "":
+                try:
+                    if weight[neigh_node] > edge[curr_node, neigh_node] + curr_weight:
+                        weight[neigh_node] = edge[curr_node, neigh_node] + curr_weight
+                        path_back[neigh_node] = curr_node
+                except KeyError:
+                    if weight[neigh_node] > edge[neigh_node, curr_node] + curr_weight:
+                        weight[neigh_node] = edge[neigh_node, curr_node] + curr_weight
+                        path_back[neigh_node] = curr_node
+                        
+        return _shortest(num_to_visit)
 
-            curr_node, curr_weight = weight.popitem()
-            if curr_node == n-1:
-                if num_to_visit <= 0:
-                    return curr_weight
 
-            for neigh_node in neigh[curr_node]:
-                if neigh_node == n-1:
-                    num_to_visit = num_to_visit - 1
-                if weight.get(neigh_node, "") != "":
-                    try:
-                        if weight[neigh_node] > edge[curr_node, neigh_node] + curr_weight:
-                            weight[neigh_node] = edge[curr_node, neigh_node] + curr_weight
-                            path_back[neigh_node] = curr_node
-                    except KeyError:
-                        if weight[neigh_node] > edge[neigh_node, curr_node] + curr_weight:
-                            weight[neigh_node] = edge[neigh_node, curr_node] + curr_weight
-                            path_back[neigh_node] = curr_node
-
-        return weight[n-1]
-
-    shortest_weight = _shortest()
+    shortest_weight = _shortest(num_to_visit)
     path = []
     x = n-1
     path.append(x)
