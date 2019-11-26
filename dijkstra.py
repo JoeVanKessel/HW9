@@ -3,7 +3,7 @@ from collections import defaultdict
 import time
 
 def shortest(n, graph):
-    #start_time = time.time()
+    start_time = time.time()
     if graph == []:
         return None
     neigh = defaultdict(list)
@@ -38,16 +38,21 @@ def shortest(n, graph):
     #print("weight dict below")
     #for a in weight:
     #    print(a, weight[a])
-    #print("neigh dict below")
-    #for a in neigh:
-    #    print(a, neigh[a])
+
 
     def _shortest():
         new_weight = float('inf')
+        i = 0;
+        num_to_visit = len(neigh[n-1])
+        num_visited_des = 0
         while len(weight) != 1:
-
+            #print(len(weight))
+            #print("neigh dict below")
+            #for a in neigh:
+            #    print(a, neigh[a])
             curr_node, curr_weight = weight.popitem()
-            for neigh_node in neigh[curr_node]:
+
+            for neigh_node in neigh[curr_node][::-1]:
 
 
                 if weight.get(neigh_node, "") != "":
@@ -59,20 +64,21 @@ def shortest(n, graph):
                             path_to[neigh_node] = path_to[curr_node] + [neigh_node]
 
 
-
-
                     except KeyError:
                         if weight[neigh_node] > edge[neigh_node, curr_node] + curr_weight:
                             weight[neigh_node] = edge[neigh_node, curr_node] + curr_weight
                             path_to[neigh_node] = path_to[curr_node] + [neigh_node]
 
 
-
-                    if neigh_node == n-1 and new_weight > weight[neigh_node]:
-                        new_weight = weight[neigh_node]
+                    if neigh_node == n-1:
+                        num_visited_des += 1
+                        if new_weight > weight[neigh_node]:
+                            new_weight = weight[neigh_node]
+                        if num_visited_des == num_to_visit:
+                            return new_weight
 
         #print("--- %s seconds for alg---" % (time.time() - start_time))
-        return new_weight
+        #return new_weight
 
     #for a in _shortest():
         #least_weigth = a
