@@ -3,7 +3,7 @@ from collections import defaultdict
 import time
 
 def shortest(n, graph):
-    start_time = time.time()
+    #start_time = time.time()
     if graph == []:
         return None
     neigh = defaultdict(list)
@@ -46,13 +46,13 @@ def shortest(n, graph):
         num_to_visit = len(neigh[n-1])
         num_visited_des = 0
         while len(weight) != 1:
-            #print(len(weight))
+            print(len(weight))
             #print("neigh dict below")
             #for a in neigh:
-            #    print(a, neigh[a])
+                #print(a, neigh[a])
             curr_node, curr_weight = weight.popitem()
 
-            for neigh_node in neigh[curr_node][::-1]:
+            for neigh_node in neigh[curr_node]:
 
 
                 if weight.get(neigh_node, "") != "":
