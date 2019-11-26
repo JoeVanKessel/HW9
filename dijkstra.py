@@ -108,13 +108,7 @@ def shortest(n, graph):
     #print("path_to dict below")
     #for a in path_to:
 
-    path = []    #print(a, path_to[a])
-    x = n-1
-    path.append(x)
-    while x != 0:
-        path.append(path_back[x])
-        x = path_back[x]
-    path.reverse()
+
     #print(path)
 
     if shortest_weight == float("inf") or path == []:
@@ -122,5 +116,12 @@ def shortest(n, graph):
         #print("--- %s seconds to return---" % (time.time() - start_time))
         return None
     else:
+        path = []    #print(a, path_to[a])
+        x = n-1
+        path.append(x)
+        while x != 0:
+            path.append(path_back[x])
+            x = path_back[x]
+        path.reverse()
         #print("--- %s seconds to return---" % (time.time() - start_time))
         return shortest_weight, path
