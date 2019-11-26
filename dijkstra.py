@@ -53,7 +53,9 @@ def shortest(n, graph):
         while len(weight) != 1:
 
             curr_node, curr_weight = weight.popitem()
-
+            if curr_node == n-1:
+                if num_to_visit <= 0:
+                    return curr_weight
 
             for neigh_node in neigh[curr_node]:
 
@@ -76,11 +78,8 @@ def shortest(n, graph):
 
 
             #print(len(weight), curr_node, curr_weight)
-            if curr_node == n-1:
 
-                #print(num_to_visit)
-                if num_to_visit <= 0:
-                    return curr_weight
+
 
 
         return weight[n-1]
