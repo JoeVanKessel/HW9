@@ -12,7 +12,7 @@ def shortest(n, graph):
     for i, j, k in graph:
         edge[i,j] = k
         neigh[i].append(j)
-
+        neigh[j].append(i)
         if i == 0:
             if weight.get(i, "") == "":
                 weight[i] = 0
@@ -25,23 +25,59 @@ def shortest(n, graph):
             weight[j] = float("inf")
 
     def _shortest():
-
+        new_weight = float('inf')
         while len(weight) != 1:
+            #print("edge dict below")
+            #print(edge)
+            #print("path_to dict below")
+            #for a in path_to:
+                #print(a, path_to[a])
+            #print("weight dict below")
+            #for a in weight:
+                #print(a, weight[a])
+            #print("neigh dict below")
+            #for a in neigh:
+                #print(a, neigh[a])
             curr_node, curr_weight = weight.popitem()
+
+
             for neigh_node in neigh[curr_node]:
-                try:
-                    if weight[neigh_node] > edge[curr_node, neigh_node] + curr_weight:
-                        weight[neigh_node] = edge[curr_node, neigh_node] + curr_weight
-                        path_to[neigh_node] = path_to[curr_node] + [neigh_node]
-                except KeyError:
-                    return None
+                #try:
+
+                if weight.get(neigh_node, "") != "":
+                    #print("neighbor node: ", neigh_node)
+                    #print("edge: ", curr_node, neigh_node)
+                    try:
+                        if weight[neigh_node] > edge[curr_node, neigh_node] + curr_weight:
+                            weight[neigh_node] = edge[curr_node, neigh_node] + curr_weight
+                            path_to[neigh_node] = path_to[curr_node] + [neigh_node]
 
 
-    _shortest()
-    try:
-        if weight[n-1] != float("inf") or path_to[n-1] != []:
-            return weight[n-1], path_to[n-1]
-        else:
-            return None
-    except KeyError:
+
+
+                    except KeyError:
+                        if weight[neigh_node] > edge[neigh_node, curr_node] + curr_weight:
+                            weight[neigh_node] = edge[neigh_node, curr_node] + curr_weight
+                            path_to[neigh_node] = path_to[curr_node] + [neigh_node]
+
+
+
+                    if neigh_node == n-1 and new_weight > weight[neigh_node]:
+                        new_weight = weight[neigh_node]
+        return new_weight
+
+    #for a in _shortest():
+        #least_weigth = a
+
+
+    shortest_weight = _shortest()
+    #return shortest_weight, path_to[n-1]
+    #print("path_to dict below")
+    #for a in path_to:
+        #print(a, path_to[a])
+
+    if shortest_weight == float("inf") or path_to[n-1] == []:
+        #print(least_weigth, path_to[n-1])
         return None
+    else:
+        return shortest_weight, path_to[n-1]
