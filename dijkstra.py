@@ -110,18 +110,14 @@ def shortest(n, graph):
 
 
     #print(path)
-    path = []  
-    if shortest_weight == float("inf") or path == []:
-        #print(least_weigth, path_to[n-1])
-        #print("--- %s seconds to return---" % (time.time() - start_time))
-        return None
-    else:
-          #print(a, path_to[a])
-        x = n-1
-        path.append(x)
+    path = []
+    x = n-1
+    path.append(x)
+    try:
         while x != 0:
             path.append(path_back[x])
             x = path_back[x]
         path.reverse()
-        #print("--- %s seconds to return---" % (time.time() - start_time))
         return shortest_weight, path
+    except KeyError:
+        return None
