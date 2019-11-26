@@ -7,7 +7,8 @@ def shortest(n, graph):
     if graph == []:
         return None
     neigh = defaultdict(list)
-    path_to = defaultdict(list)
+    #path_to = defaultdict(list)
+    path_back = {}
     edge = {}
     weight = heapdict()
 
@@ -20,13 +21,13 @@ def shortest(n, graph):
         #        weight[i] = 0
         #        path_to[i].append(i)
         #else:
-        path_to[i] = []
+        #path_to[i] = []
             #if path_to.get(j, "") == "":
-        path_to[j] = []
+        #path_to[j] = []
         weight[i] = float('inf')
         weight[j] = float("inf")
 
-    path_to[0].append(0)
+    #path_to[0].append(0)
     weight[0] = 0
 
     #print("--- %s seconds to setup---" % (time.time() - start_time))
@@ -60,6 +61,7 @@ def shortest(n, graph):
             for neigh_node in neigh[curr_node]:
 
                 if neigh_node == n-1:
+                    #print("Before -- Current Node: ", curr_node, "Current Weight: ", curr_weight, "Weight Neighbor: ", weight[neigh_node])
                     num_to_visit = num_to_visit - 1
                 if weight.get(neigh_node, "") != "":
                     #print("neighbor node: ", neigh_node)
@@ -67,22 +69,33 @@ def shortest(n, graph):
                     try:
                         if weight[neigh_node] > edge[curr_node, neigh_node] + curr_weight:
                             weight[neigh_node] = edge[curr_node, neigh_node] + curr_weight
-                            path_to[neigh_node] = path_to[curr_node] + [neigh_node]
-
+                            #path_to[neigh_node] = path_to[curr_node] + [neigh_node]
+                            path_back[neigh_node] = curr_node
+                            #print("Current Node: ", curr_node, "Path to Neighbor: ", path_to[neigh_node], "Weigth Current :", curr_weight, "Weight Next :", weight[neigh_node])#"Current Node: ", curr_node, "Path to current: ", path_to[curr_node])
+                            #print("Path Back (Node : Weight to)", path_back)
+                            #if neigh_node == n-1:
+                                #print("After -- Current Node: ", curr_node, "Weight Neighbor: ", weight[neigh_node])
 
 
                     except KeyError:
                         if weight[neigh_node] > edge[neigh_node, curr_node] + curr_weight:
                             weight[neigh_node] = edge[neigh_node, curr_node] + curr_weight
-                            path_to[neigh_node] = path_to[curr_node] + [neigh_node]
-
+                            #path_to[neigh_node] = path_to[curr_node] + [neigh_node]
+                            path_back[neigh_node] = curr_node
+                            #print("Current Node: ", curr_node, "Path to Neighbor: ", path_to[neigh_node], "Weigth Current :", curr_weight, "Weight Next :", weight[neigh_node])#"Current Node: ", curr_node, "Path to current: ", path_to[curr_node])
+                            #print("Path Back (Node : Weight to)", path_back)
+                            #if neigh_node == n-1:
+                                #print("After -- Current Node: ", curr_node, "Weight Neighbor: ", weight[neigh_node])
 
             #print(len(weight), curr_node, curr_weight)
 
 
-
-
+        #short_path = []
         return weight[n-1]
+        #while x != n-1:
+            #short_path.append(path_back[x])
+            #x =
+
         #print("--- %s seconds for alg---" % (time.time() - start_time))
         #return new_weight
 
@@ -94,12 +107,20 @@ def shortest(n, graph):
     #return shortest_weight, path_to[n-1]
     #print("path_to dict below")
     #for a in path_to:
-        #print(a, path_to[a])
 
-    if shortest_weight == float("inf") or path_to[n-1] == []:
+    path = []    #print(a, path_to[a])
+    x = n-1
+    path.append(x)
+    while x != 0:
+        path.append(path_back[x])
+        x = path_back[x]
+    path.reverse()
+    #print(path)
+
+    if shortest_weight == float("inf") or path == []:
         #print(least_weigth, path_to[n-1])
         #print("--- %s seconds to return---" % (time.time() - start_time))
         return None
     else:
         #print("--- %s seconds to return---" % (time.time() - start_time))
-        return shortest_weight, path_to[n-1]
+        return shortest_weight, path
