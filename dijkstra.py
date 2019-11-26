@@ -20,8 +20,6 @@ def shortest(n, graph):
     weight[0] = 0
 
     def _shortest():
-        new_weight = float('inf')
-        i = 0;
         num_to_visit = len(neigh[n-1])-1
 
         while len(weight) != 1:
