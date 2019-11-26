@@ -43,18 +43,22 @@ def shortest(n, graph):
     def _shortest():
         new_weight = float('inf')
         i = 0;
-        num_to_visit = len(neigh[n-1])
-        num_visited_des = 0
+        #print(neigh[n-1])
+        num_to_visit = len(neigh[n-1])-1
+
+        #print(len(weight))
+        #print("neigh dict below")
+        #for a in neigh:
+            #print(a, neigh[a])
         while len(weight) != 1:
-            print(len(weight))
-            #print("neigh dict below")
-            #for a in neigh:
-                #print(a, neigh[a])
+
             curr_node, curr_weight = weight.popitem()
+
 
             for neigh_node in neigh[curr_node]:
 
-
+                if neigh_node == n-1:
+                    num_to_visit = num_to_visit - 1
                 if weight.get(neigh_node, "") != "":
                     #print("neighbor node: ", neigh_node)
                     #print("edge: ", curr_node, neigh_node)
@@ -64,19 +68,22 @@ def shortest(n, graph):
                             path_to[neigh_node] = path_to[curr_node] + [neigh_node]
 
 
+
                     except KeyError:
                         if weight[neigh_node] > edge[neigh_node, curr_node] + curr_weight:
                             weight[neigh_node] = edge[neigh_node, curr_node] + curr_weight
                             path_to[neigh_node] = path_to[curr_node] + [neigh_node]
 
 
-                    if neigh_node == n-1:
-                        num_visited_des += 1
-                        if new_weight > weight[neigh_node]:
-                            new_weight = weight[neigh_node]
-                        if num_visited_des == num_to_visit:
-                            return new_weight
+            #print(len(weight), curr_node, curr_weight)
+            if curr_node == n-1:
 
+                #print(num_to_visit)
+                if num_to_visit <= 0:
+                    return curr_weight
+
+
+        return weight[n-1]
         #print("--- %s seconds for alg---" % (time.time() - start_time))
         #return new_weight
 
